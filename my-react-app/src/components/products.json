@@ -1,63 +1,63 @@
 [
     {
       "image": "https://i.imgur.com/PIkIqVf.png",
-      "value": "199.99",
+      "value": 19999,
       "stock": 20,
       "article": "All in One Gamer",
       "description": "Nuestro todo en uno más potente es ideal para trabajar y estudiar al máximo rendimiento"
     },
     {
       "image": "https://i.imgur.com/D4QPSCJ.png",
-      "value": "$249.99",
+      "value": 24999,
       "stock": 20,
       "article": "Portatil Alienware",
       "description": "Lleva tu experiencia de juego al siguiente nivel con una de las laptops más potentes del mercado"
     },
     {
       "image": "https://i.imgur.com/pUsrbEJ.png",
-      "value": "$299.99",
+      "value": 29999,
       "stock": 20,
       "article": "Portatil MSI",
       "description": "La combinación perfecta entre portabilidad y potencia, adquiérela ahora"
     },
     {
       "image": "https://i.imgur.com/WM9C15N.jpg",
-      "value": "$49.99",
+      "value": 4999,
       "stock": 20,
       "article": "Mouse HyperX",
       "description": "Un mouse ligero y preciso, ideal para largas jornadas de juegos"
     },
     {
       "image": "https://i.imgur.com/jkckLcX.gif",
-      "value": "$189.99",
+      "value": 8899,
       "stock": 20,
       "article": "Intel Core i9",
       "description": "El procesador Intel Core i9 listo para overclock, revitalizará tu PC"
     },
     {
       "image": "https://i.imgur.com/J51H7FY.jpg",
-      "value": "$65.99",
+      "value": 6599,
       "stock": 20,
       "article": "Combo Gamer",
       "description": "Llévate un combo con diadema, teclado, mouse y alfombrilla a un precio increíble"
     },
     {
       "image": "https://i.imgur.com/J51H7FY.jpg",
-      "value": "$119.99",
+      "value": 11999,
       "stock": 20,
       "article": "Gabinete Coolermaster",
       "description": "El gabinete que necesitas para mantener tus componentes frescos"
     },
     {
       "image": "https://i.imgur.com/WK3MjXL.jpg",
-      "value": "$99.99",
+      "value": 9999,
       "stock": 20,
       "article": "Escritorio Gamer",
       "description": "El espacio que necesitas para trabajar o jugar a gusto"
     },
     {
       "image": "https://i.imgur.com/HmBzKAR.jpg",
-      "value": "$89.99",
+      "value": 8999,
       "stock": 20,
       "article": "Diadema Gamer",
       "description": "Escucha con la mayor claridad de detalle en todo momento"

@@ -93,7 +93,7 @@ const ProductCard = ({ image, value, article, description }) => {
       <ProductImage src={image} alt={article} />
       <ProductInfo>
         <div className="product-price">
-          <p style={{ color: '#5D6867' }}>{value}</p>
+          <p style={{ color: '#5D6867' }}>${value}</p>
           <p style={{ fontWeight: 'bold', color: 'black' }}>{article}</p>
         </div>
         <ProductDescription>{description}</ProductDescription>

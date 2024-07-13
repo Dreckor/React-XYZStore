@@ -67,6 +67,14 @@ const Cart = () => {
     setIsModalOpen(false);
   };
 
+  const getTotalPrice = () => {
+    let totalPrice = 0;
+    cart.forEach(product => {
+      totalPrice += product.value * product.units;
+    });
+    return totalPrice;
+  };
+
   return (
     <CartWrapper>
       <h2>Carrito de Compras</h2>
@@ -84,6 +92,9 @@ const Cart = () => {
       {cart.length === 0 && <p>El carrito está vacío.</p>}
       {cart.length > 0 && (
         <>
+        <div style={{ marginTop: '10px' }}>
+            <strong>Total: ${getTotalPrice()}</strong>
+          </div>
         <CheckoutButton onClick={handleCheckout}>Realizar compra</CheckoutButton>
         <button onClick={() => clearCart()} className="bg-red-500 text-white py-1 px-3 rounded">Cancelar compra</button>
         </>
