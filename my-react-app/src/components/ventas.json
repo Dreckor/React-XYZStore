@@ -1,0 +1,41 @@
+{
+    "sales": [
+        {
+            "id": 1,
+            "article": "Computadora portátil",
+            "description": "Equipo Lenovo con teclado retroiluminado y 1TB",
+            "value": "2700000",
+            "stock": 14,
+            "image": "https://i.imgur.com/ItT5rbJ.jpeg",
+            "clientID": 1
+        },
+        {
+            "id": 2,
+            "article": "Computadora de escritorio",
+            "description": "Equipo de escritorio con gabinete personalizado y componentes a la medida",
+            "value": "1700000",
+            "stock": 18,
+            "image": "https://i.imgur.com/XdQW2cc.jpeg",
+            "clientID": 1
+        },
+        {
+            "id": 3,
+            "article": "Computadora portátil",
+            "description": "Equipo Lenovo con teclado retroiluminado y 1TB",
+            "value": "2700000",
+            "stock": 12,
+            "image": "https://i.imgur.com/ItT5rbJ.jpeg",
+            "clientID": 3
+        },
+        {
+            "id": 4,
+            "article": "Computadora de escritorio",
+            "description": "Equipo de escritorio con gabinete personalizado y componentes a la medida",
+            "value": "1700000",
+            "stock": 10,
+            "image": "https://i.imgur.com/XdQW2cc.jpeg",
+            "clientID": 3
+        }
+    ],
+    "balance": 18300000
+}
