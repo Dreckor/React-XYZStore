@@ -1,107 +1,130 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+require('dotenv').config();
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+const Product = require('./models/Product');
+const Client = require('./models/Client');
+const Sale = require('./models/Sale');
 
 let products = [];
 let sales = [];
 let balance = 0;
 
 
-app.post('/products', (req, res) => {
-    try{
-        const { article, description, value, stock, image } = req.body;
-        const newProduct = {
-            id: products.length + 1,
-            article,
-            description,
-            value,
-            stock,
-            image
-        };
-        products.push(newProduct);
-        console.log(newProduct)
-        res.status(201).json(newProduct);
-    }catch(error){
-        console.log(error)
-    }
-   
-});
-
-
-app.put('/products/:id', (req, res) => {
-    try{
-        const { id } = req.params;
-    console.log(id)
-    const updatedProduct = req.body;
-    const productIndex = products.findIndex(p => p.id === parseInt(id));
-    if (productIndex !== -1) {
-        products[productIndex] = { ...products[productIndex], ...updatedProduct };
-        res.status(200).json(products[productIndex]);
-    } else {
-        res.status(404).json({ message: 'Product not found' });
-    }
-    }catch(error){
-        console.log(error)
-    }
-    
-});
-
-
-app.get('/products', (req, res) => {
-    res.json(products);
-});
-
-
-app.get('/products/available', (req, res) => {
-    try{
-        const availableProducts = products.filter(product => product.stock > 0);
-        res.json(availableProducts);
-    }catch(error){
-        console.log(error)
-    }
-    
-});
-
-
-app.post('/cart', (req, res) => {
+app.post('/products', async (req, res, next) => {
     try {
-        const { items, clientID } = req.body;
-        let total = 0;
-        let outOfStockItems = [];
-        let purschasedItems = [];
-        items.forEach(item => {
-            const productIndex = products.findIndex(p => p.id === item.id && p.stock >= item.quantity);
-            if (productIndex !== -1) {
-                products[productIndex].stock -= item.quantity;
-                total += products[productIndex].value * item.quantity;
-                purschasedItems.push({...products[productIndex], clientID, quantity})
-            } else {
-                outOfStockItems.push(item);
-            }
-        });
-
-        if (outOfStockItems.length > 0) {
-            res.status(400).json({ message: 'Some items are out of stock or insufficient quantity', outOfStockItems });
-        } else {
-            purschasedItems.forEach(item => {
-                sales.push(item)
-            })
-            balance += total
-            res.json({ message: 'Purchase completed', total })
-        }
+      const { name, description, value, stock } = req.body;
+      const newProduct = new Product({
+        name,
+        description,
+        value,
+        stock
+      });
+      const savedProduct = await newProduct.save();
+      res.status(201).json(savedProduct);
     } catch (error) {
-        next(error)
+      next(error);
     }
+  });
 
-});
+  app.put('/products/:id', async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const updatedProduct = req.body;
+      const product = await Product.findByIdAndUpdate(id, updatedProduct, { new: true });
+      if (product) {
+        res.json(product);
+      } else {
+        res.status(404).json({ message: 'Product not found' });
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
 
-app.get('/sales', (req, res) => {
-    res.json({"sales": sales, "balance": balance});
-});
+
+  app.get('/products', async (req, res, next) => {
+    try {
+      const products = await Product.find();
+      res.json(products);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+
+  app.get('/products/available', async (req, res, next) => {
+    try {
+      const availableProducts = await Product.find({ stock: { $gt: 0 } });
+      res.json(availableProducts);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+
+  app.use(bodyParser.json());
+
+  
+  app.post('/cart', async (req, res, next) => {
+      try {
+          const { items, clientID } = req.body;
+          let total = 0;
+          let outOfStockItems = [];
+          let purchasedItems = [];
+  
+          for (const item of items) {
+              try {
+                  const product = await Product.findById(item.id);
+                  if (!product || product.stock < item.quantity) {
+                      outOfStockItems.push(item);
+                  } else {
+                      product.stock -= item.quantity;
+                      await product.save();
+                      total += product.value * item.quantity;
+                      const sale = new Sale({
+                          productId: product._id,
+                          clientID,
+                          quantity: item.quantity,
+                          totalPrice: product.value * item.quantity
+                      });
+                      await sale.save();
+                      purchasedItems.push(sale);
+                  }
+              } catch (error) {
+                  console.error('Error procesando el producto:', error);
+                  outOfStockItems.push(item);
+              }
+          }
+  
+          if (outOfStockItems.length > 0) {
+              res.status(400).json({ message: 'Some items are out of stock or insufficient quantity', outOfStockItems });
+          } else {
+              res.json({ message: 'Purchase completed', total });
+          }
+      } catch (error) {
+          next(error);
+      }
+  });
+  
+ 
+  app.get('/sales', async (req, res, next) => {
+      try {
+          const sales = await Sale.find().populate('productId');
+          const balance = sales.reduce((acc, sale) => acc + sale.totalPrice, 0);
+          res.json({ sales, balance });
+      } catch (error) {
+          next(error);
+      }
+  });
 
 const PORT = 5000;
 app.listen(PORT, () => {
