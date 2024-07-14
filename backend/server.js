@@ -14,13 +14,7 @@ mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     
-  }).then(() => {
-    console.log('Conexión exitosa a MongoDB');
-  
-  
-  }).catch(err => {
-    console.error('Error de conexión a MongoDB:', err.message);
-  });
+  })
 
 const db = mongoose.connection;
 
