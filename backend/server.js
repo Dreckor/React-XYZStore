@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 require('dotenv').config();
-const MONGODB_URI = 'mongodb://localhost:27017/xyzstore';
+
 
 const app = express();
 app.use(cors());
@@ -14,7 +14,13 @@ mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     
-  })
+  }).then(() => {
+    console.log('Conexión exitosa a MongoDB');
+  
+  
+  }).catch(err => {
+    console.error('Error de conexión a MongoDB:', err.message);
+  });
 
 const db = mongoose.connection;
 
