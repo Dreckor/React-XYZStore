@@ -46,12 +46,13 @@ let balance = 0;
 
 app.post('/products', async (req, res, next) => {
     try {
-      const { name, description, value, stock } = req.body;
+      const { name, description, value, stock, image } = req.body;
       const newProduct = new Product({
         name,
         description,
         value,
-        stock
+        stock,
+        image
       });
       const savedProduct = await newProduct.save();
       res.status(201).json(savedProduct);
