@@ -18,13 +18,31 @@ export default function FormularioProductos() {
   };
 
   const handleConfirm = () => {
-   
-    const updatedProducts = [...productsData, newProduct];
-    console.log('Actualizado products.json:', updatedProducts);
+    
+    fetch('http://localhost:5000/products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: newProduct.articulo,
+        description: newProduct.descripcion,
+        value: newProduct.valor,
+        stock: newProduct.unidades,
+        image: newProduct.imagen,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Producto añadido:', data);
+        setIsModalOpen(false);
+        setIsSuccessModalOpen(true);
+      })
+      .catch(error => {
+        console.error('Error al añadir el producto:', error);
+      });
 
     
-    setIsModalOpen(false);
-    setIsSuccessModalOpen(true);
   };
 
   return (
