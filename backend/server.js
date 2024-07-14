@@ -13,7 +13,13 @@ app.use(express.json());
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true, 
+    
+  }).then(() => {
+    console.log('Conexión exitosa a MongoDB');
+  
+  
+  }).catch(err => {
+    console.error('Error de conexión a MongoDB:', err.message);
   });
 
 const db = mongoose.connection;
