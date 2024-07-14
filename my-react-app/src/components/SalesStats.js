@@ -62,15 +62,22 @@ const SalesStats = () => {
       </StatCard>
       <h3>Detalles de Ventas</h3>
       {salesData.sales.map((sale, index) => (
-        <StatCard key={sale._id}>
-          <StatCardTitle>{sale.productId.name}</StatCardTitle>
-          <StatCardContent>
-            <p>Descripción: {sale.productId.description}</p>
-            <p>Valor: ${sale.productId.value}</p>
-            <p>Stock: {sale.productId.stock}</p>
-            <p>Cliente ID: {sale.clientID}</p>
-          </StatCardContent>
-        </StatCard>
+  <StatCard key={sale._id}>
+    <StatCardTitle>{sale.productId ? sale.productId.name : 'Producto Eliminado'}</StatCardTitle>
+    <StatCardContent>
+      {sale.productId && (
+        <>
+          <p>Descripción: {sale.productId.description}</p>
+          <p>Valor: ${sale.productId.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+          <p>Stock: {sale.productId.stock}</p>
+        </>
+      )}
+      <p>Cliente ID: {sale.clientID}</p>
+      <p>Cantidad: {sale.quantity}</p>
+      <p>Precio Total: ${sale.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+      <p>Fecha: {new Date(sale.timestamp).toLocaleString()}</p>
+    </StatCardContent>
+  </StatCard>
       ))}
     </StatsWrapper>
   );
