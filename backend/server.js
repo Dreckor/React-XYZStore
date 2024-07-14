@@ -111,7 +111,7 @@ app.post('/products', async (req, res, next) => {
               try {
                   const product = await Product.findById(item.id);
                   if (!product || product.stock < item.quantity) {
-                      outOfStockItems.push(item);
+                      outOfStockItems.push(product);
                   } else {
                       product.stock -= item.quantity;
                       await product.save();

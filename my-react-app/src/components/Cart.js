@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { CartContext } from '../context/CartContext';
+import RowProductCard from './RowProductCard';
 
 const CartWrapper = styled.div`
   background-color: #F0F0F0;
@@ -54,13 +55,50 @@ const ModalContent = styled.div`
 `;
 
 const Cart = () => {
-  const { cart, removeFromCart, clearCart  } = useContext(CartContext);
+  const { cart, removeFromCart, clearCart } = useContext(CartContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState(''); 
+  const [outOfStockItems, setOutOfStockItems] = useState([]);
 
   const handleCheckout = () => {
-    console.log('Artículos en el carrito:', cart);
-    setIsModalOpen(true);
-    clearCart();
+
+    const items = cart.map(product => ({
+      id: product.id, 
+      quantity: product.units 
+    }));
+
+    const requestData = {
+      items: items,
+      clientID: 3 
+    };
+
+
+    fetch('http://18.216.106.114/api/cart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message && data.outOfStockItems) {
+        
+          setModalMessage(`Error: ${data.message}`);
+          setOutOfStockItems(data.outOfStockItems);
+        } else {
+     
+          console.log('Compra realizada:', data);
+          setModalMessage('¡Gracias por su compra!');
+          clearCart(); 
+        }
+        setIsModalOpen(true); 
+      })
+      .catch(error => {
+        console.error('Error al realizar la compra:', error);
+        setModalMessage('Error al realizar la compra. Intente de nuevo más tarde.');
+        setIsModalOpen(true); 
+      });
   };
 
   const closeModal = () => {
@@ -103,7 +141,22 @@ const Cart = () => {
       {isModalOpen && (
         <ModalWrapper>
           <ModalContent>
-            <h3>¡Gracias por su compra!</h3>
+            <h3>{modalMessage}</h3>
+            {outOfStockItems.length > 0 && (
+              <>
+                <h4>Artículos fuera de stock o con cantidad insuficiente:</h4>
+                {outOfStockItems.map((item, index) => (
+                  <RowProductCard
+                    key={index}
+                    imageUrl={item.image}
+                    units={item.quantity}
+                    value={item.value}
+                    title={item.name}
+                    description={item.description}
+                  />
+                ))}
+              </>
+            )}
             <button onClick={closeModal} className="bg-blue-500 text-white py-2 px-4 rounded">Cerrar</button>
           </ModalContent>
         </ModalWrapper>
