@@ -19,7 +19,7 @@ export default function FormularioProductos() {
 
   const handleConfirm = () => {
     
-    fetch('http://localhost:5000/products', {
+    fetch('http://18.216.106.114/api/products', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
