@@ -27,11 +27,12 @@ const LastOffers = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // Fetch data from the API endpoint
+    
     fetch('http://18.216.106.114/api/products/available')
       .then(response => response.json())
       .then(data => {
-        setProducts(data); // Update state with fetched data
+
+        setProducts(data);
       })
       .catch(error => {
         console.error('Error fetching products:', error);
@@ -54,7 +55,8 @@ const LastOffers = () => {
       <Slider {...settings}>
         {products.map((product, index) => (
           <ProductCard
-            key={index}
+            key={product._id}
+            id={product._id}
             image={product.image}
             value={product.value}
             article={product.name}

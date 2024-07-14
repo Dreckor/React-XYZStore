@@ -61,8 +61,9 @@ const Cart = () => {
   const [outOfStockItems, setOutOfStockItems] = useState([]);
 
   const handleCheckout = () => {
-
+    console.log(cart)
     const items = cart.map(product => ({
+      
       id: product.id, 
       quantity: product.units 
     }));
@@ -83,9 +84,11 @@ const Cart = () => {
       .then(response => response.json())
       .then(data => {
         if (data.message && data.outOfStockItems) {
-        
+          console.log(data)
           setModalMessage(`Error: ${data.message}`);
-          setOutOfStockItems(data.outOfStockItems);
+          const validOutOfStockItems = data.outOfStockItems.filter(item => item !== null);
+          setOutOfStockItems(validOutOfStockItems);
+          
         } else {
      
           console.log('Compra realizada:', data);
@@ -117,6 +120,7 @@ const Cart = () => {
     <CartWrapper>
       <h2>Carrito de Compras</h2>
       {cart.map((product, index) => (
+        
         <CartItem key={index}>
           <CartItemInfo>
             <span style={{ fontWeight: 'bold' }}>{product.article}</span>
@@ -148,8 +152,7 @@ const Cart = () => {
                 {outOfStockItems.map((item, index) => (
                   <RowProductCard
                     key={index}
-                    imageUrl={item.image}
-                    units={item.quantity}
+                    units={item.stock}
                     value={item.value}
                     title={item.name}
                     description={item.description}

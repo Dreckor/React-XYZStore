@@ -63,14 +63,14 @@ const ButtonGroup = styled.div`
   margin-top: 10px;
 `;
 
-const ProductCard = ({ image, value, article, description }) => {
+const ProductCard = ({ image, value, article, description, id }) => {
   const { addToCart,updateCartItemUnits , removeFromCart } = useContext(CartContext);
   const { user } = useAuth();
   const [units, setUnits] = useState(1);
   const [added, setAdded] = useState(false);
 
   const handleAddToCart = () => {
-    addToCart({ value, article, description, units });
+    addToCart({ id, value, article, description, units });
     setAdded(true);
   };
 
