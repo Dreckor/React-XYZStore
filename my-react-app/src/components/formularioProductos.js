@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Modal from 'react-modal';
-import productsData from './products.json'; 
+
 import { Link } from 'react-router-dom';
 
 Modal.setAppElement('#root');

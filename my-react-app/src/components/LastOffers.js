@@ -23,12 +23,18 @@ const SectionHeader = styled.div`
 
 
 
-const LastOffers = () => {
-  const [products, setProducts] = useState([]);
+const [products, setProducts] = useState([]);
 
   useEffect(() => {
-
-    setProducts(productsData);
+    
+    fetch('http://18.216.106.114/api/products/available')
+      .then(response => response.json())
+      .then(data => {
+        setProducts(data); 
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+      });
   }, []);
 
 
@@ -50,7 +56,7 @@ const LastOffers = () => {
             key={index}
             image={product.image}
             value={product.value}
-            article={product.article}
+            article={product.name}
             description={product.description}
           />
         ))}
