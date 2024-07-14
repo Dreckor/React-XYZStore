@@ -23,19 +23,20 @@ const SectionHeader = styled.div`
 
 
 
-const [products, setProducts] = useState([]);
+const LastOffers = () => {
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    
+    // Fetch data from the API endpoint
     fetch('http://18.216.106.114/api/products/available')
       .then(response => response.json())
       .then(data => {
-        setProducts(data); 
+        setProducts(data); // Update state with fetched data
       })
       .catch(error => {
         console.error('Error fetching products:', error);
       });
-  }, []);
+  }, []); 
 
 
   const settings = {
