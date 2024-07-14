@@ -4,11 +4,30 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 require('dotenv').config();
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = 'mongodb://localhost:27017/xyzstore';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true, 
+  });
+
+const db = mongoose.connection;
+
+
+db.on('error', err => {
+  console.error('Error de conexión a MongoDB:', err);
+});
+
+db.once('open', () => {
+  console.log('Conexión exitosa a MongoDB');})
+if (db.readyState !== 1) {
+    console.error('No se pudo conectar a MongoDB');
+  }
 
 const Product = require('./models/Product');
 const Client = require('./models/Client');
