@@ -76,6 +76,20 @@ app.post('/products', async (req, res, next) => {
     }
   });
 
+  app.delete('/products/:id', async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const product = await Product.findByIdAndDelete(id);
+      if (product) {
+        res.json({ message: 'Product deleted successfully' });
+      } else {
+        res.status(404).json({ message: 'Product not found' });
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
+
 
   app.get('/products', async (req, res, next) => {
     try {

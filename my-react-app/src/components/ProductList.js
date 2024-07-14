@@ -16,6 +16,13 @@ const ProductList = () => {
           console.error('Error fetching products:', error);
         });
     }, []); 
+    const handleProductUpdate = (updatedProduct) => {
+    
+      const updatedProducts = products.map(product =>
+          product._id === updatedProduct._id ? updatedProduct : product
+      );
+      setProducts(updatedProducts);
+  };
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Listado de Productos</h1>
@@ -23,11 +30,13 @@ const ProductList = () => {
         {products.map((product, index) => (
           <RowProductCard
             imageUrl={product.image}
-            key={index}
+            key={product._id}
+            productId={product._id}
             units={product.stock}
             value={product.value}
             title={product.name}
             description={product.description}
+            onUpdate={handleProductUpdate}
           />
         ))}
       </div>
